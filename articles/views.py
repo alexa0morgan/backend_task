@@ -8,6 +8,7 @@ from .forms import ArticleForm
 # import logging
 # logger = logging.getLogger(__name__)
 
+
 def articles(request):
     # logger.warning("Platform is running at risk")
     articles = Article.objects.all()

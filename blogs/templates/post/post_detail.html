@@ -3,20 +3,42 @@
 {% block title %}{{ post.name }}{% endblock title %}
 {% block header %}{{ post.name }}{% endblock header %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
-{% if post.featured_image %}
-<img src="{{ post.featured_image.url}}" alt="">
-{% endif %}
+    {% if post.featured_image %}
+        <img src="{{ post.featured_image.url }}" alt="">
+    {% endif %}
 
-<h2>{{ post.name }}</h2>
-<p>{{ post.description }}</p>
+    <h2>{{ post.name }}</h2>
+    <p>{{ post.description }}</p>
 
-<hr>
+    <hr>
 
-<div class="d-flex gap-1">
-<a class="btn btn-success" href="{% url 'post_edit' post.pk %}"> Редактировать</a>
-<a class="btn btn-danger" href="{% url 'post_delete' post.pk %}"> Удалить</a>
-</div>
+    <div class="d-flex gap-1">
+        <a class="btn btn-success" href="{% url 'post_edit' post.pk %}"> Редактировать</a>
+        <a class="btn btn-danger" href="{% url 'post_delete' post.pk %}"> Удалить</a>
+    </div>
+
+<h2 style="margin-top: 70px">Комментарии:</h2>
+<ul>
+    {% for comment in comments %}
+        <li>{{ comment.author.username }}: {{ comment.body }}</li>
+    {% empty %}
+        <li>Нет комментариев.</li>
+    {% endfor %}
+</ul>
+
+<h2>Оставить комментарий:</h2>
+<form method="POST" action="{% url 'comment_create' %}" novalidate enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ comment_form|crispy }}
+
+    <input name="post" type="hidden" value="{{ post.pk }}">
+
+    <button class="btn btn-primary">Оставить комментарий</button>
+</form>
 
 {% endblock content %}

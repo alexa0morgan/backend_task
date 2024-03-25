@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<a href="{% url 'post_new' %}">Создать пост</a>
+<a href="{% url 'post_create' %}">Создать пост</a>
 
 <table class="table">
   <thead>
@@ -22,7 +22,7 @@
       <td>{{post.name}}</td>
       <td>
         <div class="d-flex gap-1">
-          <a href="{{ post.get_absolute_url }}" class="btn btn-success btn-sm">Обновить</a>
+          <a href="{{ post.get_absolute_url }}" class="btn btn-success btn-sm">Просмотреть</a>
           <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm">Удалить</a>
         </div>
       </td>
