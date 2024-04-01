@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load filterss %}
 {% block head %}
     <link rel="stylesheet" href="/static/css/post_list.css">{% endblock head %}
 {% block title %}Список постов{% endblock title %}
@@ -16,7 +15,7 @@
                 <img class="post__image" src="/media/{{ post.featured_image }}" alt="картинка поста {{ post.name }}">
                 <div class="post__text">
                     <a class="post__name" href="{{ post.get_absolute_url }}">{{ post.name }}</a>
-                    <p class="post__desc">{{ post.description|safe}}</p>
+                    <p class="post__desc">{{ post.description|safe }}</p>
                     <div class="post__author">Автор поста: {{ post.author.username }}</div>
                     <p class="post__cat">Категория:
                         <a href="?category={{ post.category.slug }}">{{ post.category.name }}</a>
@@ -59,34 +58,9 @@
     </table>{% endcomment %}
 
 
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            {% with request.GET.dict as params %}
-                {% with new_params=params|update_page:1 %}
-                    <a href="?{{ new_params|encode_params }}">&laquo; first</a>
-                {% endwith %}
-                {% with new_params=params|update_page:page_obj.previous_page_number %}
-                    <a href="?{{ new_params|encode_params }}">previous</a>
-                {% endwith %}
-            {% endwith %}
-        {% endif %}
+    {% include "includes/pagination.html" %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
 
-        {% if page_obj.has_next %}
-            {% with request.GET.dict as params %}
-                {% with new_params=params|update_page:page_obj.next_page_number %}
-                    <a href="?{{ new_params|encode_params }}">next</a>
-                {% endwith %}
-                {% with new_params=params|update_page:page_obj.paginator.num_pages %}
-                    <a href="?{{ new_params|encode_params }}">last &raquo;</a>
-                {% endwith %}
-            {% endwith %}
-        {% endif %}
-    </span>
-    </div>
+
 
 {% endblock content %}

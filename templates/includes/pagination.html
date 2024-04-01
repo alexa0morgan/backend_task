@@ -1,0 +1,31 @@
+{% load filterss %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            {% with request.GET.dict as params %}
+                {% with new_params=params|update_page:1 %}
+                    <a href="?{{ new_params|encode_params }}">&laquo; first</a>
+                {% endwith %}
+                {% with new_params=params|update_page:page_obj.previous_page_number %}
+                    <a href="?{{ new_params|encode_params }}">previous</a>
+                {% endwith %}
+            {% endwith %}
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            {% with request.GET.dict as params %}
+                {% with new_params=params|update_page:page_obj.next_page_number %}
+                    <a href="?{{ new_params|encode_params }}">next</a>
+                {% endwith %}
+                {% with new_params=params|update_page:page_obj.paginator.num_pages %}
+                    <a href="?{{ new_params|encode_params }}">last &raquo;</a>
+                {% endwith %}
+            {% endwith %}
+        {% endif %}
+    </span>
+    </div>
