@@ -5,10 +5,17 @@
 
 {% block content %}
 
-<p>Вы уверены, что хотите удалить "{{ post.name }}"?</p>
+    {% if user.id == post.author.id %}
+        <p>Вы уверены, что хотите удалить "{{ post.name }}"?</p>
 
-<form action="" method="post">{% csrf_token %}
-  <button class="btn btn-danger">Удалить</button>
-</form>
+        <form action="" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger">Удалить</button>
+        </form>
+    {% else %}
+        <p>Вы кто такие? Я вас сюда не звал!</p>
+    {% endif %}
+
+
 
 {% endblock content %}

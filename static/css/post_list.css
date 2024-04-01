@@ -1,0 +1,29 @@
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.post {
+
+    border: 3px solid gray;
+}
+
+.post__image {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.post__text {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post__name {
+    align-self: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

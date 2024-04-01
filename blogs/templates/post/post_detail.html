@@ -2,6 +2,7 @@
 
 {% block title %}{{ post.name }}{% endblock title %}
 {% block header %}{{ post.name }}{% endblock header %}
+{% block head %}{{ comment_form.media }}{% endblock head %}
 
 {% load crispy_forms_tags %}
 
@@ -12,33 +13,35 @@
     {% endif %}
 
     <h2>{{ post.name }}</h2>
-    <p>{{ post.description }}</p>
+    <p>{{ post.description|safe }}</p>
 
     <hr>
+    {% if user.id == post.author.id %}
+        <div class="d-flex gap-1">
+            <a class="btn btn-success" href="{% url 'post_edit' post.slug %}"> Редактировать</a>
+            <a class="btn btn-danger" href="{% url 'post_delete' post.slug %}"> Удалить</a>
+        </div>
+    {% endif %}
 
-    <div class="d-flex gap-1">
-        <a class="btn btn-success" href="{% url 'post_edit' post.pk %}"> Редактировать</a>
-        <a class="btn btn-danger" href="{% url 'post_delete' post.pk %}"> Удалить</a>
-    </div>
+    <h2 style="margin-top: 70px">Комментарии:</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.author.username }}: {{ comment.body|safe }}</li>
+        {% empty %}
+            <li>Нет комментариев.</li>
+        {% endfor %}
+    </ul>
+    {% if not user.is_anonymous %}
+    <h2>Оставить комментарий:</h2>
+    <form method="POST" action="{% url 'comment_create' %}" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
 
-<h2 style="margin-top: 70px">Комментарии:</h2>
-<ul>
-    {% for comment in comments %}
-        <li>{{ comment.author.username }}: {{ comment.body }}</li>
-    {% empty %}
-        <li>Нет комментариев.</li>
-    {% endfor %}
-</ul>
+        {{ comment_form|crispy }}
 
-<h2>Оставить комментарий:</h2>
-<form method="POST" action="{% url 'comment_create' %}" novalidate enctype="multipart/form-data">
-    {% csrf_token %}
+        <input name="post" type="hidden" value="{{ post.pk }}">
 
-    {{ comment_form|crispy }}
-
-    <input name="post" type="hidden" value="{{ post.pk }}">
-
-    <button class="btn btn-primary">Оставить комментарий</button>
-</form>
+        <button class="btn btn-primary">Оставить комментарий</button>
+    </form>
+    {% endif %}
 
 {% endblock content %}
