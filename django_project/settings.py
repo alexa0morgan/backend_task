@@ -24,7 +24,6 @@ MESSAGE_TAGS = {
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -35,7 +34,6 @@ SECRET_KEY = env.str("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -50,11 +48,17 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
 
+    "rest_framework",
+    'rest_framework_simplejwt',
+    "corsheaders",
+    "drf_spectacular",
+    'django_filters',
     "tinymce",
 
     "articles",
     "blogs",
-    "users"
+    "users",
+    "postApi"
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -146,3 +150,34 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/users/login'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+        # "rest_framework.permissions.AllowAny",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3
+
+}
+
+
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:8000",
+)
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "TEST API",
+    "DESCRIPTION": "my description",
+    "VERSION": "1.0.0",
+}
