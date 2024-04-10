@@ -46,3 +46,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.author.username}: {self.body[:20]}'
+
+    def get_absolute_url(self):
+        return reverse("post_detail", kwargs={"slug": self.post.slug})

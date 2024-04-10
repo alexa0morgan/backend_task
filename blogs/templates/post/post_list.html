@@ -7,7 +7,22 @@
 
 {% block content %}
 
-    <a href="{% url 'post_create' %}">Создать пост</a>
+    <div class="search">
+        <form action="" method="get">
+            <input name="q" type="search" placeholder="Поиск" value="{{ q }}">
+            <select name="category">
+                <option {% if category == "-1" %}selected{% endif %} value="-1">Выбор категории</option>
+                {%  for cat in categories %}
+                <option {% if category == cat.slug %}selected{% endif %} value="{{ cat.slug }}"
+                >{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Поиск</button>
+
+        </form>
+    </div>
+
+    <a href="{% url 'post_create' %}" class="button">Создать пост</a>
 
     <div class="list">
         {% for post in post_list %}
